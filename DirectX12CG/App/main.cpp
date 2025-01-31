@@ -1,4 +1,5 @@
 #include "App.h"
+#include <cstdlib>
 //#include "Capture.h"
 #pragma region pragma comment
 
@@ -13,6 +14,7 @@
 
 int32_t main()
 {
+	system("chcp 65001");
     std::make_unique<MCB::App>()->Run();
 	return 0;
 }

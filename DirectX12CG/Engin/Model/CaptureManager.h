@@ -6,22 +6,19 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <YOLOPoseEstimation.h>
 
 namespace MCB
 {
-	enum Locate : int32_t
-	{
-		FRONT,
-		BACK,
-		RIGHT,
-		LEFT
-	};
+
 	class CaptureManager
 	{
 
 	private:
-		std::array<Capture,4> capdatas;
+		std::array<Capture,3> capdatas;
 		std::unordered_map<YOLO_POSE_INDEX,CaptureData> finalCaptureData_;
+		std::unique_ptr<YOLOPoseEstimation> m_YOLOPoseEstimation_;
+		const std::string& modelPath_ = "Checkpoints/yolo11x-pose.onnx";
 	public:
 		void Initialize();
 		void Update();

@@ -145,9 +145,9 @@ void MCB::DemoScene::Update()
 	if ( poseInitialize_ )
 	{
 		initializeCount_ = std::chrono::system_clock::now();
-		cap.InitializePose();
-		test2Animation_.animationModel_->skeleton.CalcTargetPosFromCapdataTest1(cap.GetCaptureData(YOLO_POSE_INDEX::SHOULDER_L),2);
-		test2Animation_.animationModel_->skeleton.CalcTargetPosFromCapdataTest1(cap.GetCaptureData(YOLO_POSE_INDEX::SHOULDER_R),2);
+		//cap.InitializePose();
+		//test2Animation_.animationModel_->skeleton.CalcTargetPosFromCapdataTest1(cap.GetCaptureData(YOLO_POSE_INDEX::SHOULDER_L),2);
+		//test2Animation_.animationModel_->skeleton.CalcTargetPosFromCapdataTest1(cap.GetCaptureData(YOLO_POSE_INDEX::SHOULDER_R),2);
 		std::chrono::seconds sec = std::chrono::duration_cast< std::chrono::seconds >( initializeCount_ - initializetime_ );
 		if ( sec >std::chrono::seconds{ 5 } )
 		{
@@ -156,8 +156,8 @@ void MCB::DemoScene::Update()
 	}
 	else
 	{
-		test2Animation_.animationModel_->skeleton.CalcTargetPosFromCapdataTest1(cap.GetCaptureData(YOLO_POSE_INDEX::SHOULDER_L),2);
-		test2Animation_.animationModel_->skeleton.CalcTargetPosFromCapdataTest1(cap.GetCaptureData(YOLO_POSE_INDEX::SHOULDER_R),2);
+		//test2Animation_.animationModel_->skeleton.CalcTargetPosFromCapdataTest1(cap.GetCaptureData(YOLO_POSE_INDEX::SHOULDER_L),2);
+		//test2Animation_.animationModel_->skeleton.CalcTargetPosFromCapdataTest1(cap.GetCaptureData(YOLO_POSE_INDEX::SHOULDER_R),2);
 	}
 
     MatrixUpdate();

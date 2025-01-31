@@ -7,6 +7,7 @@
 #include <vector>
 #include <unordered_map>
 #include <Vector3D.h>
+#include <Vector3.h>
 namespace MCB
 {
 
@@ -31,9 +32,9 @@ namespace MCB
 		std::unordered_map<YOLO_POSE_INDEX,CaptureData> capturedata_;
 		cv::VideoCapture capture_;
 		cv::Mat img_;
-		const std::string& modelPath_ = "Checkpoints/yolo11x-pose.onnx";
-		std::unique_ptr<YOLOPoseEstimation> m_YOLOPoseEstimation_;
-		const YOLO_POSE_LANDMAKE* land_;
+		//const std::string& modelPath_ = "Checkpoints/yolo11x-pose.onnx";
+		YOLOPoseEstimation* m_YOLOPoseEstimation_;
+		std::unordered_map <YOLO_POSE_INDEX,MCBM::Vector3>* land_;
 		float mask_threshold_ = 0.5f;
 		float conf_threshold_ = 0.30f;
 		float iou_threshold_ = 0.45f;
@@ -44,7 +45,7 @@ namespace MCB
 	public:
 		float cameradist_ = 1.0f;//メートル単位
 		Vector3D cameraPosition_;
-		float focalLength_;
+		float focalLength_ = 581.818;
 		Vector3D screenCenterPos_;
 
 		void Initialize(const int32_t index = 0);
@@ -52,5 +53,6 @@ namespace MCB
 		void SetInitialPose();
 		void Finalize();
 		CaptureData& GetCaptureData(YOLO_POSE_INDEX key);
+		void SetYOLOEstimation(YOLOPoseEstimation* yoloEs);
 	};
 }

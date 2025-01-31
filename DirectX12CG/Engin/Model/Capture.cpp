@@ -29,13 +29,9 @@ void MCB::Capture::Initialize(const int32_t index)
 		return;
 	}
 
-	m_YOLOPoseEstimation_.reset(CreateYOLOPoseEstimation());
+	m_YOLOPoseEstimation_->CameraInitialize(&capture_,1.0f);
 
-	m_YOLOPoseEstimation_->CameraInitialize(&capture_);
 
-	m_YOLOPoseEstimation_->ModelInitialize(modelPath_.c_str());
-
-	m_YOLOPoseEstimation_->Start(true);
 	for ( int32_t i = 0; i < ( int32_t ) YOLO_POSE_INDEX::YOLO_POSE_INDEX_MAX; i++ )
 	{
 		CaptureData datatemp;
@@ -103,44 +99,50 @@ void MCB::Capture::Initialize(const int32_t index)
 		}
 	}
 
-	windowName = "run" + std::to_string(index_);
+	//windowName = "run" + std::to_string(index_);
 
 }
 
 void MCB::Capture::Update()
 {
-	cv::imshow(windowName.c_str(),img_);
+	//cv::imshow(windowName.c_str(),img_);
 
 	land_ = m_YOLOPoseEstimation_->GetLandmakes();
-
 	//skelton構成
 	for ( int32_t i = 0; i < ( int32_t ) YOLO_POSE_INDEX::YOLO_POSE_INDEX_MAX; i++ )
 	{
-		capturedata_[ ( YOLO_POSE_INDEX ) i ].captureBonePos = { TruncateToTens(land_[ i ].x),TruncateToTens(land_[ i ].y),0 };
+		capturedata_[ ( YOLO_POSE_INDEX ) i ].captureBonePos = { land_->operator[]( (YOLO_POSE_INDEX) i).x,
+			land_->operator[](( YOLO_POSE_INDEX ) i).y,land_->operator[](( YOLO_POSE_INDEX ) i).z };
 	}
 
 }
 
 void MCB::Capture::SetInitialPose()
 {
-	land_ = m_YOLOPoseEstimation_->GetLandmakes();
+	//land_ = m_YOLOPoseEstimation_->GetLandmakes();
 
 	//skelton構成
 	for ( int32_t i = 0; i < ( int32_t ) YOLO_POSE_INDEX::YOLO_POSE_INDEX_MAX; i++ )
 	{
-		capturedata_[ ( YOLO_POSE_INDEX ) i ].initializedCaptureBonePos = { TruncateToTens(land_[ i ].x),TruncateToTens(land_[ i ].y),0 };
-		capturedata_[ ( YOLO_POSE_INDEX ) i ].captureBonePos = { TruncateToTens(land_[ i ].x),
-		TruncateToTens(land_[ i ].y),0 };
+		capturedata_[ ( YOLO_POSE_INDEX ) i ].initializedCaptureBonePos = { land_->operator[](( YOLO_POSE_INDEX ) i).x,
+					land_->operator[](( YOLO_POSE_INDEX ) i).y,land_->operator[](( YOLO_POSE_INDEX ) i).z };
+		capturedata_[ ( YOLO_POSE_INDEX ) i ].captureBonePos = { land_->operator[](( YOLO_POSE_INDEX ) i).x,
+					land_->operator[](( YOLO_POSE_INDEX ) i).y,land_->operator[](( YOLO_POSE_INDEX ) i).z }; 
 	}
 }
 
 void MCB::Capture::Finalize()
 {
 	m_YOLOPoseEstimation_->End();
-	cv::destroyWindow(windowName.c_str());
+	//cv::destroyWindow(windowName.c_str());
 }
 
 MCB::CaptureData& MCB::Capture::GetCaptureData(YOLO_POSE_INDEX key)
 {
 	return capturedata_[ key ];
+}
+
+void MCB::Capture::SetYOLOEstimation(YOLOPoseEstimation* yoloEs)
+{
+	m_YOLOPoseEstimation_ = yoloEs;
 }

@@ -21,7 +21,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXTex", "External\Dire
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MyImgui", "External\MyImgui\MyImgui\MyImgui.vcxproj", "{47DCF9AB-1928-483F-B5B4-71AFBE878B00}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OnnxRuntimeforDirectML", "..\..\..\..\..\K021G1118\CG2\DirectX12CG\External\OnnxRuntimeforDirectML\OnnxRuntimeDirectMLTest.vcxproj", "{87851C67-72B5-4993-B0E9-B643DC3B2054}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OnnxRuntimeforDirectML", "External\OnnxRuntimeforDirectML\OnnxRuntimeDirectMLTest.vcxproj", "{87851C67-72B5-4993-B0E9-B643DC3B2054}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
