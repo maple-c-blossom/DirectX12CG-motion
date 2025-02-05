@@ -405,6 +405,8 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>
+    </EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -427,8 +429,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$$(SolutionDir)External\DirectML.1.15.1\include;$(SolutionDir)External\OnnxRuntime..19.2\build\native\include;$(SolutionDir)External\opencv\build\include;$(SolutionDir)External\Assimp\include;$(SolutionDir)External\nlohmann_json;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)External\DirectXTex;$(SolutionDir)External\MyImgui;$(ProjectDir)Engin\Camera;$(ProjectDir)Engin\Collide;$(ProjectDir)Engin\DirectX;$(ProjectDir)Engin\Light;$(ProjectDir)Engin\Math\Matrix;$(ProjectDir)Engin\Math\Util;$(ProjectDir)Engin\Math\Vector;$(ProjectDir)Engin\Model;$(ProjectDir)Engin\Object;$(ProjectDir)Engin\Particle;$(ProjectDir)Engin\Pipeline;$(ProjectDir)Engin\Sound;$(ProjectDir)Engin\Sprite;$(ProjectDir)Engin\Texture;$(ProjectDir)Engin\Util;$(ProjectDir)App\Scene;$(SolutionDir)External\OnnxRuntimeforDirectML\Include;$(ProjectDir)App;$(SolutionDir)External</IncludePath>
-    <LibraryPath>$(SolutionDir)\External\motion\Thaad\lib\debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)External\DirectML.1.15.1\include;$(SolutionDir)External\OnnxRuntime..19.2\build\native\include;$(SolutionDir)External\opencv\build\include;$(SolutionDir)External\Assimp\include;$(SolutionDir)External\nlohmann_json;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)External\DirectXTex;$(SolutionDir)External\MyImgui;$(ProjectDir)Engin\Camera;$(ProjectDir)Engin\Collide;$(ProjectDir)Engin\DirectX;$(ProjectDir)Engin\Light;$(ProjectDir)Engin\Math\Matrix;$(ProjectDir)Engin\Math\Util;$(ProjectDir)Engin\Math\Vector;$(ProjectDir)Engin\Model;$(ProjectDir)Engin\Object;$(ProjectDir)Engin\Particle;$(ProjectDir)Engin\Pipeline;$(ProjectDir)Engin\Sound;$(ProjectDir)Engin\Sprite;$(ProjectDir)Engin\Texture;$(ProjectDir)Engin\Util;$(ProjectDir)App\Scene;$(SolutionDir)External\OnnxRuntimeforDirectML\Include;$(ProjectDir)App</IncludePath>
+    <LibraryPath>$(SolutionDir)External\opencv\build\x64\vc15\lib;$(SolutionDir)External\OnnxRuntime..19.2\runtimes\win-x64\native;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -447,12 +449,13 @@
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>5045;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)External\motion\Thaad\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opencv_objdetect4d.lib;opencv_video4d.lib;opencv_stitching4d.lib;opencv_calib3d4d.lib;opencv_highgui4d.lib;opencv_videoio4d.lib;opencv_features2d4d.lib;opencv_dnn4d.lib;opencv_photo4d.lib;opencv_imgcodecs4d.lib;opencv_imgproc4d.lib;opencv_ml4d.lib;opencv_flann4d.lib;opencv_core4d.lib;onnxruntime.lib;jpeg.lib;tiffd.lib;libpng16d.lib;libwebp.lib;zlibd.lib;lzma.lib;libsharpyuv.lib;OnnxRuntimeDirectMLTest.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>onnxruntime.lib;opencv_world3410d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>

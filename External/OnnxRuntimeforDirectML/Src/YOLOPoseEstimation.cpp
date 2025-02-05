@@ -131,7 +131,7 @@ private:
 	std::unordered_map <YOLO_POSE_INDEX,Vector3> finalCaptureData_;
 
 	std::vector<float> cameradist = {1.f,1.f,1.f,1.f};//メートル単位
-	std::vector<Vector3> cameraPosition_;
+	std::vector<Vector3> cameraPosition_ = { {0,0,1},{1,0,0},{-1,0,0} };
 	std::vector<float> focalLength_ = { 581.818f,581.818f,581.818f,581.818f };
 	Vector3 screenCenterPos_ = { CAMERA_WITH / 2,CAMERA_HIGHT / 2,0 };
 
@@ -195,13 +195,7 @@ void YOLOPoseEstimationImp::Start(bool isDraw)
 		}
 	}
 
-	for ( size_t i = 0; i < m_pCams.size(); i++ )
-	{
-		m_frameThread[ i ] = std::thread([ this,i ] ()
-			{
-				this->GetFrame(i);
-			});
-	}
+
 	th = std::thread([this]()
 		{
 			this->Update();
@@ -223,24 +217,25 @@ void YOLOPoseEstimationImp::End()
 	th.join();
 }
 
+
 void YOLOPoseEstimationImp::Update()
 {
 	m_canDraw = false;
 
-
 	while ( isRunning )
 	{
-		m_emission = false;
-
+		for ( size_t i = 0; i < m_pCams.size(); i++ )
+		{
+			m_pCams[ i ]->read(frames[ i ]);
+		}
 
 		for ( size_t i = 0; i < m_pCams.size(); i++ )
 		{
-			
+
 			std::vector<YoloResults> objs;
 
 			if ( m_pModel )
 			{
-				std::lock_guard<std::mutex> lock(value_mutex);
 				objs = m_pModel->predict_once(frames[ i ],m_confhhreshold,m_iouThreshold,m_maskThreshold);
 			}
 
@@ -249,45 +244,39 @@ void YOLOPoseEstimationImp::Update()
 				for ( int j = 0; j < ( int ) YOLO_POSE_INDEX::YOLO_POSE_INDEX_MAX; j++ )
 				{
 					int idx = j * 3;
-					m_baseLandmakes[ i ][j].x = objs[ 0 ].keypoints[ idx ];
-					m_baseLandmakes[ i ][j].y = objs[ 0 ].keypoints[ idx + 1 ];
-					m_baseLandmakes[ i ][j].vi = objs[ 0 ].keypoints[ idx + 2 ];
+					m_baseLandmakes[ i ][ j ].x = objs[ 0 ].keypoints[ idx ];
+					m_baseLandmakes[ i ][ j ].y = objs[ 0 ].keypoints[ idx + 1 ];
+					m_baseLandmakes[ i ][ j ].vi = objs[ 0 ].keypoints[ idx + 2 ];
 				}
 
-				Vec2F mid = Midpoint({ m_baseLandmakes[i][ size_t(YOLO_POSE_INDEX::HIP_L) ].x, m_baseLandmakes[i][ size_t(YOLO_POSE_INDEX::HIP_L) ].y },{ m_baseLandmakes[i][ size_t(YOLO_POSE_INDEX::HIP_R) ].x, m_baseLandmakes[i][ size_t(YOLO_POSE_INDEX::HIP_R) ].y });
+				Vec2F mid = Midpoint({ m_baseLandmakes[ i ][ size_t(YOLO_POSE_INDEX::HIP_L) ].x, m_baseLandmakes[ i ][ size_t(YOLO_POSE_INDEX::HIP_L) ].y },{ m_baseLandmakes[ i ][ size_t(YOLO_POSE_INDEX::HIP_R) ].x, m_baseLandmakes[ i ][ size_t(YOLO_POSE_INDEX::HIP_R) ].y });
 
 				std::lock_guard<std::mutex> lock(value_mutex);
 
 				for ( int j = 0; j < ( int ) YOLO_POSE_INDEX::YOLO_POSE_INDEX_MAX; j++ )
 				{
-					Vec2F newPoint = Translate({ m_baseLandmakes[ i ][j].x, m_baseLandmakes[ i ][j].y},mid);
+					Vec2F newPoint = Translate({ m_baseLandmakes[ i ][ j ].x, m_baseLandmakes[ i ][ j ].y },mid);
 
-					m_landmakes[ i ][j].x = newPoint.x;
-					m_landmakes[ i ][j].y = newPoint.y;
-					m_landmakes[ i ][j].vi = m_baseLandmakes[ i ][j].vi;
-
-					capturedata_[ i ][ ( YOLO_POSE_INDEX ) j ].captureBonePos.x = m_landmakes[ i ][ j ].x;
-					capturedata_[ i ][ ( YOLO_POSE_INDEX ) j ].captureBonePos.y = m_landmakes[ i ][ j ].y;
-					capturedata_[ i ][ ( YOLO_POSE_INDEX ) j ].captureBonePos.z = m_landmakes[ i ][ j ].vi;
+					m_landmakes[ i ][ j ].x = newPoint.x;
+					m_landmakes[ i ][ j ].y = newPoint.y;
+					m_landmakes[ i ][ j ].vi = m_baseLandmakes[ i ][ j ].vi;
 				}
 
 				m_canDraw = true;
 			}
 
-			//if ( m_isDraw )
-			//{
-			//	_Draw(frames[ i ],i);
-			//}
+			if ( m_isDraw )
+			{
+				_Draw(frames[ i ],i);
+			}
 
-			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		}
-		m_emission = true; 
-	}
-	//for ( size_t i = 0; i < m_pCams.size(); i++ )
-	//{
-	//	cv::destroyWindow(winName[ i ].c_str());
-	//}
 
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
+	}
+
+	//cv::destroyWindow("win");
 }
 
 void YOLOPoseEstimationImp::GetFrame(int32_t index)

@@ -5,11 +5,9 @@ using namespace MCB;
 void MCB::Capture::Initialize(const int32_t index)
 {
 	index_ = index;
-	cv::VideoCapture cap;
-	capture_ = std::move(cap);
-	capture_ = cv::VideoCapture(index,cv::CAP_DSHOW);
-	capture_.set(cv::CAP_PROP_FRAME_WIDTH,1280);
-	capture_.set(cv::CAP_PROP_FRAME_HEIGHT,720);
+	capture_ = cv::VideoCapture(index);
+	capture_.set(cv::CAP_PROP_FRAME_WIDTH,480);
+	capture_.set(cv::CAP_PROP_FRAME_HEIGHT,480);
 	capture_.set(cv::CAP_PROP_FPS,30);
 	capture_.set(cv::CAP_PROP_FOURCC,cv::VideoWriter::fourcc('H','2','6','4'));
 

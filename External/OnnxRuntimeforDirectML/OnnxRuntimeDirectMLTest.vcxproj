@@ -72,7 +72,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>$(SolutionDir)Thaad\opencv\build\x64\vc15\bin;$(SolutionDir)Thaad\opencv\build\x64\vc15\lib;$(SolutionDir)External\DirectML.1.15.1\bin\x64-win;$(SolutionDir)External\OnnxRuntime..19.2\runtimes\win-x64\native;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)External\opencv\build\x64\vc15\lib;$(SolutionDir)External\DirectML.1.15.1\bin\x64-win;$(SolutionDir)External\OnnxRuntime..19.2\runtimes\win-x64\native;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Generated\Outputs\$(Configuration)\</OutDir>
     <IncludePath>$(SolutionDir)External\DirectML.1.15.1\include;$(SolutionDir)External\OnnxRuntime..19.2\build\native\include;$(SolutionDir)External\opencv\build\include;$(IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
@@ -128,6 +128,10 @@
       <Command>
       </Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

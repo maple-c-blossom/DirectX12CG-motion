@@ -13,7 +13,7 @@ void CaptureManager::Initialize()
 	for ( int32_t i = 0; i < 3; i++ )
 	{
 		capdatas[ i ].SetYOLOEstimation(m_YOLOPoseEstimation_.get());
-		capdatas[ i ].Initialize(static_cast< int32_t >( i ));
+		capdatas[ i ].Initialize(static_cast< int32_t >( i+1 ));
 	}
 
 	m_YOLOPoseEstimation_->Start(true);
