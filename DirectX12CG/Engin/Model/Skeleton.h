@@ -12,7 +12,8 @@ namespace MCBRef
 		MCB::Vector3D translation_;
 		MCB::Vector3D scale_;
 		MCB::Quaternion rotation_;
-		Bone* parentBone_;
+		MCB::MCBMatrix inverseBindMatrix_;
+		std::string parentBoneName_;
 
 
 	};
@@ -25,8 +26,10 @@ namespace MCBRef
 
 		Bone* rootBone_;
 
+		
 	public:
 		void SetBone(SetBoneData boneData);
+		Bone* FindBone(std::string findBoneName);
 	};
 }
 

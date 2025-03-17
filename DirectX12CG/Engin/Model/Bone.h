@@ -36,12 +36,12 @@ namespace MCBRef
 
 		int32_t parentId_;
 
-		void CalculateLocalMatrix();
-
-		void CalculateGlobalMatrix();
 
 	public:
 
+		void CalculateLocalMatrix();
+
+		void CalculateGlobalMatrix();
 
 		void SetParent(Bone* parent);
 
